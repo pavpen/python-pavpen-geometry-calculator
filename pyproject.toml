@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
@@ -39,7 +39,7 @@ Source = "https://github.com/pavpen/pavpen-geometry-calculator"
 source_pkgs = ["pavpen_geometry_calculator", "tests"]
 branch = true
 parallel = true
-omit = ["src/pavpen/geometry_calculator/__about__.py"]
+omit = ["src/pavpen/geometry_calculator/_version.py"]
 
 [tool.coverage.paths]
 pavpen_geometry_calculator = [
@@ -53,6 +53,9 @@ exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 
 [tool.hatch.build.targets.sdist]
 exclude = ["py-venv"]
+
+# [tool.hatch.build.targets.sdist.force-include]
+# "src/pavpen/geometry_calculator/_version.py" = "pavpen/geometry_calculator/_version.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pavpen"]
@@ -68,7 +71,22 @@ extra-dependencies = ["mypy>=1.0.0"]
 check = "mypy --install-types --non-interactive {args:src/pavpen/geometry_calculator tests}"
 
 [tool.hatch.version]
-path = "src/pavpen/geometry_calculator/__about__.py"
+source = "vcs"
+
+
+[tool.hatch.version.raw-options]
+# See `scm.git.describe_command`
+# in <https://setuptools-scm.readthedocs.io/en/latest/config/>:
+git_describe_command = [
+  "git",
+  "describe",
+  "--dirty",
+  "--tags",
+  "--long",
+  "--match=v*",
+]
+relative_to = "pyproject.toml"
+version_file = "src/pavpen/geometry_calculator/_version.py"
 
 [tool.ruff]
 exclude = ["py-venv"]

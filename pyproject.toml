@@ -83,6 +83,9 @@ git_describe_command = [
   "--match=v*",
 ]
 relative_to = "pyproject.toml"
+# See `setuptools_scm.local_scheme`
+# in <https://setuptools-scm.readthedocs.io/en/latest/config/>:
+local_scheme = ["dirty-tag"]
 version_file = "src/pavpen/geometry_calculator/_version.py"
 
 [tool.ruff]

@@ -54,9 +54,6 @@ exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 [tool.hatch.build.targets.sdist]
 exclude = ["py-venv"]
 
-# [tool.hatch.build.targets.sdist.force-include]
-# "src/pavpen/geometry_calculator/_version.py" = "pavpen/geometry_calculator/_version.py"
-
 [tool.hatch.build.targets.wheel]
 packages = ["src/pavpen"]
 

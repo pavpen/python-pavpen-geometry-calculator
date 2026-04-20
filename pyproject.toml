@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pavpen-geometry-calculator"
+dynamic = ["version"]
+description = 'Disparate utilities for calculating coordinates and other elements of geometric constructions'
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+keywords = []
+authors = [{ name = "Pavel M. Penev", email = "pavpen@gmail.com" }]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: Manufacturing",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Visualization",
+  "Topic :: Software Development :: Libraries",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Documentation = "https://github.com/pavpen/pavpen-geometry-calculator#readme"
+Issues = "https://github.com/pavpen/pavpen-geometry-calculator/issues"
+Source = "https://github.com/pavpen/pavpen-geometry-calculator"
+
+[tool.coverage.run]
+source_pkgs = ["pavpen_geometry_calculator", "tests"]
+branch = true
+parallel = true
+omit = ["src/pavpen/geometry_calculator/__about__.py"]
+
+[tool.coverage.paths]
+pavpen_geometry_calculator = [
+  "src/pavpen/geometry_calculator",
+  "*/src/pavpen/geometry-calculator",
+]
+tests = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["py-venv"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pavpen"]
+
+[tool.hatch.envs.hatch-test]
+default-args = ["--config-file=pytest.toml"]
+extra-dependencies = ["pytest"]
+
+[tool.hatch.envs.types]
+extra-dependencies = ["mypy>=1.0.0"]
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/pavpen/geometry_calculator tests}"
+
+[tool.hatch.version]
+path = "src/pavpen/geometry_calculator/__about__.py"
+
+[tool.ruff]
+exclude = ["py-venv"]

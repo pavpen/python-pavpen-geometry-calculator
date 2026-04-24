@@ -59,7 +59,7 @@ packages = ["src/pavpen"]
 
 [tool.hatch.envs.doc]
 detached = false
-extra-dependencies = ["python-docs-theme", "sphinx"]
+extra-dependencies = ["furo", "sphinx"]
 
 [tool.hatch.envs.doc.scripts]
 # Add a `hatch run doc:build` command:

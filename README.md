@@ -14,21 +14,22 @@ constructions.
 ## Example
 
 ```python
-# Calculates an orthonormal basis of a space that spans a given set of
-# points
+>>> # Calculate an orthonormal basis of a space that spans a given set of
+>>> # points
+>>>
+>>> import math
+>>> from pavpen.geometry_calculator import OrthonormalBasisCalculator
+>>> from pavpen.geometry_calculator.vector_field_implementations import (
+...    TupleVectorFieldFloatOperations,
+... )
+>>>
+>>> OrthonormalBasisCalculator(
+...    vector_field_operations=TupleVectorFieldFloatOperations.for_3d(),
+...    float_tolerance=1e-8,
+...    points=((0, 0, 0), (0, 2, 0), (0, 0, -2)),
+... ).calculate().basis_vectors
+[(0.0, 1.0, 0.0), (0.0, 0.0, -1.0)]
 
-import math
-from pavpen.geometry_calculator.vector_field_implementations.tuple_vector_field_float_operations import (
-    TupleVectorFieldFloatOperations,
-)
-
-result = OrthonormalBasisCalculator(
-    vector_field_operations=TupleVectorFieldFloatOperations.for_3d(),
-    float_tolerance=1e-8,
-    points=((0, 0, 0), (0, 2, 0), (0, 0, -2)),
-).calculate().basis_vectors
-
-assert result == [(0.0, 1.0, 0.0), (0.0, 0.0, -1.0)]
 ```
 
 ### Notes

@@ -12,6 +12,13 @@
   pip install hatch
   ```
 
+## Testing
+
+```terminal
+hatch test
+hatch run doc:test
+```
+
 ## Packaging
 
 * Activate the Python development virtual environment from

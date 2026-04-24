@@ -1,3 +1,13 @@
+"""Disparate utilities for calculating coordinates and other elements of
+geometric constructions
+
+See the `. . ._calculator` sub-modules for each calculation utility.
+
+Other sub-modules, such as :py:mod:`~pavpen.geometry_calculator.faults`, and
+:py:mod:`~pavpen.geometry_calculator.defaults` contain the core code shared by
+the various calculators.
+"""
+
 from pavpen.geometry_calculator._version import __commit_id__ as __commit_id__
 from pavpen.geometry_calculator._version import __version__ as __version__
 from pavpen.geometry_calculator._version import __version_tuple__ as __version_tuple__

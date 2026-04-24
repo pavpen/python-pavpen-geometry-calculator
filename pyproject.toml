@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "pavpen-geometry-calculator"
 dynamic = ["version"]
-description = 'Disparate utilities for calculating coordinates and other elements of geometric constructions'
+description = "Disparate utilities for calculating coordinates and other elements of geometric constructions"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
@@ -56,6 +56,16 @@ exclude = ["py-venv"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/pavpen"]
+
+[tool.hatch.envs.doc]
+detached = false
+extra-dependencies = ["python-docs-theme", "sphinx"]
+
+[tool.hatch.envs.doc.scripts]
+# Add a `hatch run doc:build` command:
+build = "sphinx-build -M html doc/source doc/build"
+clean = "python build-scripts/doc_clean.py"
+test = "sphinx-build -M doctest doc/source doc/build"
 
 [tool.hatch.envs.hatch-test]
 default-args = ["--config-file=pytest.toml"]

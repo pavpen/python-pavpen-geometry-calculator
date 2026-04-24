@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 class CircleCalculator[Vector]:
-    """Calculates the location of points on a circle
+    """Calculates the location of points on a circle (or an ellipse, if the
+    norms of `x_hat`, and `y_hat` are different)
 
     Example:
 

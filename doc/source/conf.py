@@ -70,22 +70,15 @@ intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 
 # Borrow the Python documentation theme
 # <https://github.com/python/python-docs-theme>:
-html_theme = "python_docs_theme"
+html_theme = "furo"
 html_favicon = None
 html_static_path = ["_static"]
 html_theme_path = ["theme-overrides"]
 
 # HTML override templates:
-templates_path = ["theme-overrides/templates"]
+# templates_path = ["theme-overrides/templates"]
 
 html_theme_options: dict[str, object] = {
-    "collapsiblesidebar": True,
-    "issues_url": pyproject_dict["project"]["urls"]["Issues"],
-    "license_url": "/license.html",
-    "root_url": pyproject_dict["project"]["urls"]["Source"],
-    "root_name": project,
-    "root_icon": None,
-    "root_include_title": False,  # We use the version switcher instead.
 }
 
 # Custom theme variables passed to override templates:

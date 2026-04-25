@@ -40,17 +40,17 @@ with open(Path(__file__).parent.parent.parent / "pyproject.toml", "rb") as pypro
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Geometry Calculator"
-release = get_version()
 author = ",".join(author["name"] for author in pyproject_dict["project"]["authors"])
 copyright = f"2026, {author}"  # noqa: A001
+release = get_version()
+
+# Extract the <major.minor> part of `release`:
+version = ".".join(release.split(".")[:2])
 
 license_name = pyproject_dict["project"]["license"]
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
-templates_path = ["_templates"]
-exclude_patterns = []
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -58,12 +58,48 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
 ]
+
+# Extension configuration
+
 autosummary_generate = True  # Enable `sphinx.ext.autosummary`.
 
+# Generate documentation for imported symbols:
+autosummary_imported_members = True
 
 # Base URLs for links to external packages
 # <https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html#module-sphinx.ext.intersphinx>:
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
+
+# -- Internationalisation ----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-internationalisation
+
+language = "en"
+
+# -- Markup ------------------------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-markup
+
+trim_footnote_reference_space = True
+
+# -- Nitpicky Mode (i.e., Reference, and Link Validation) --------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-the-nitpicky-mode
+
+nitpicky = True
+
+# -- Object Signatures (i.e., Programming Symbol Rendering) ------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-object-signatures
+
+toc_object_entries = True
+
+# -- Source Files ------------------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-source-files
+
+exclude_patterns = []
+
+# -- Templating --------------------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-templating
+
+# Override templates:
+templates_path = ["theme-overrides/templates"]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -71,15 +107,11 @@ intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 # Borrow the Python documentation theme
 # <https://github.com/python/python-docs-theme>:
 html_theme = "furo"
-html_favicon = None
-html_static_path = ["_static"]
+html_theme_options: dict[str, object] = {}
 html_theme_path = ["theme-overrides"]
 
-# HTML override templates:
-# templates_path = ["theme-overrides/templates"]
-
-html_theme_options: dict[str, object] = {
-}
-
-# Custom theme variables passed to override templates:
+# Custom theme variables passed to templates:
 html_context = {"license_name": license_name}
+
+html_favicon = None
+html_static_path = ["_static"]

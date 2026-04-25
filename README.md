@@ -41,7 +41,7 @@ constructions.
     object which treats a `tuple[float, float, float]` as a 3-dimensional
     orthonormal vector.
 
-## Install
+## Installation
 
 ```console
 pip install pavpen-geometry-calculator

@@ -12,6 +12,12 @@
   pip install hatch
   ```
 
+## Type Checking
+
+```terminal
+hatch run types:check
+```
+
 ## Testing
 
 ```terminal

@@ -13,8 +13,8 @@ from pavpen.geometry_calculator.faults import (
     ImpossibleOutputGeometryError,
 )
 from pavpen.geometry_calculator.rounded_corner_calculator import RoundedCornerCalculator
-from pavpen.geometry_calculator.vector_field_implementations.tuple_vector_field_float_operations import (
-    TupleVectorFieldFloatOperations,
+from pavpen.geometry_calculator.vector_field_implementations.tuple_float_vector_field_operations import (
+    TupleFloatVectorFieldOperations,
 )
 
 
@@ -86,7 +86,7 @@ class TestRoundedCornerCalculator:
     )
     def test_calculate_result_matches_a_test_case(self, test_case: CalculateTestCase) -> None:
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_2d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_2d()
         calculator = RoundedCornerCalculator(
             vector_field_operations=vector_field_operations,
             float_tolerance=test_case.float_tolerance,
@@ -112,7 +112,7 @@ class TestRoundedCornerCalculator:
 
     def test_calculate_reports_a_warning_on_ambiguous_center_location(self) -> None:
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_2d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_2d()
         calculator = RoundedCornerCalculator(
             vector_field_operations=vector_field_operations,
             float_tolerance=1e-8,
@@ -160,7 +160,7 @@ class TestRoundedCornerCalculator:
         """
 
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_2d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_2d()
         calculator = RoundedCornerCalculator(
             vector_field_operations=vector_field_operations,
             float_tolerance=1e-8,

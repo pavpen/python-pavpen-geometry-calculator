@@ -9,15 +9,15 @@ import pytest
 
 from pavpen.geometry_calculator.faults import CalculationPrecisionExceededError
 from pavpen.geometry_calculator.orthonormal_basis_calculator import OrthonormalBasisCalculator
-from pavpen.geometry_calculator.vector_field_implementations.tuple_vector_field_float_operations import (
-    TupleVectorFieldFloatOperations,
+from pavpen.geometry_calculator.vector_field_implementations.tuple_float_vector_field_operations import (
+    TupleFloatVectorFieldOperations,
 )
 
 
 class TestOrthonormalBasisCalculator:
     def test_constructor_throws_on_empty_points_collection(self):
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_1d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_1d()
 
         # Act, and verify
         with pytest.raises(ValueError, match=r"The `points` argument must contain, at least, one element."):
@@ -29,7 +29,7 @@ class TestOrthonormalBasisCalculator:
 
     def test_calculate_raises_on_redundant_points(self):
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_3d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_3d()
         calculator = OrthonormalBasisCalculator(
             vector_field_operations=vector_field_operations,
             float_tolerance=1e-8,
@@ -48,7 +48,7 @@ class TestOrthonormalBasisCalculator:
 
     def test_calculate_ignores_redundant_points(self):
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_3d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_3d()
         calculator = OrthonormalBasisCalculator(
             vector_field_operations=vector_field_operations,
             float_tolerance=1e-8,
@@ -64,7 +64,7 @@ class TestOrthonormalBasisCalculator:
 
     def test_calculate_returns_an_orthonormal_basis(self):
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_3d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_3d()
         calculator = OrthonormalBasisCalculator(
             vector_field_operations=vector_field_operations,
             float_tolerance=1e-8,

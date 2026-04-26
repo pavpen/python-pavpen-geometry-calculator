@@ -8,7 +8,7 @@ constructions.
 ## Table of Contents
 
 * [Example](#example)
-* [Install](#install)
+* [Installation](#installation)
 * [License](#license)
 
 ## Example

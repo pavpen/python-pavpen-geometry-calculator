@@ -71,6 +71,22 @@ test = "sphinx-build -M doctest doc/source doc/build"
 default-args = ["--config-file=pytest.toml"]
 extra-dependencies = ["pytest", "sphinx"]
 
+[tool.hatch.envs.license-notices]
+extra-dependencies = ["pip-licenses"]
+
+[tool.hatch.envs.license-notices.scripts]
+build = "pip-licenses"
+
+[tool.pip-licenses]
+allow-only = "MIT; BSD-3-Clause;"
+format = "plain-vertical"
+from = "mixed"
+no-license-path = true
+output-file = "LICENSE-NOTICES.txt"
+with-authors = true
+with-license-file = true
+with-urls = true
+
 [tool.hatch.envs.types]
 extra-dependencies = ["mypy>=1.0.0"]
 

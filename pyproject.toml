@@ -69,7 +69,7 @@ test = "sphinx-build -M doctest doc/source doc/build"
 
 [tool.hatch.envs.hatch-test]
 default-args = ["--config-file=pytest.toml"]
-extra-dependencies = ["pytest"]
+extra-dependencies = ["pytest", "sphinx"]
 
 [tool.hatch.envs.types]
 extra-dependencies = ["mypy>=1.0.0"]

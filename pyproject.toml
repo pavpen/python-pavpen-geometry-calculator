@@ -31,7 +31,7 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Documentation = "https://github.com/pavpen/python-pavpen-geometry-calculator#readme"
+Documentation = "https://pavpen.github.io/python-pavpen-geometry-calculator/"
 Issues = "https://github.com/pavpen/python-pavpen-geometry-calculator/issues"
 Source = "https://github.com/pavpen/python-pavpen-geometry-calculator"
 

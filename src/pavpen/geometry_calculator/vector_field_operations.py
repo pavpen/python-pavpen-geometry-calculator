@@ -15,7 +15,7 @@ class VectorFieldOperations[Scalar, Vector](ABC):
     (e.g., tuples) as vectors without having to patch their data type's
     algebraic operations (e.g., a tuple multiplied by a scalar is already
     defined), which may break other code relying on them, or adding a wrapper
-    type, which may introduce the need for serialization, and deserialization.
+    type, which may introduce the need for marshalling.
     """
 
     @property

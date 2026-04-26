@@ -14,6 +14,9 @@ from pavpen.geometry_calculator._version import __commit_id__ as commit_id
 from pavpen.geometry_calculator._version import __version__ as version
 from pavpen.geometry_calculator._version import __version_tuple__ as version_tuple
 from pavpen.geometry_calculator.circle_calculator import CircleCalculator as CircleCalculator
+from pavpen.geometry_calculator.float_vector_field_operations import (
+    FloatVectorFieldOperations as FloatVectorFieldOperations,
+)
 from pavpen.geometry_calculator.orthonormal_basis_calculator import (
     OrthonormalBasisCalculator as OrthonormalBasisCalculator,
 )
@@ -21,9 +24,6 @@ from pavpen.geometry_calculator.planar_rotation_direction import PlanarRotationD
 from pavpen.geometry_calculator.rounded_corner_calculator import RoundedCornerCalculator as RoundedCornerCalculator
 from pavpen.geometry_calculator.rounded_corner_calculator import (
     RoundedCornerCalculatorComputedValueNames as RoundedCornerCalculatorComputedValueNames,
-)
-from pavpen.geometry_calculator.vector_field_float_operations import (
-    VectorFieldFloatOperations as VectorFieldFloatOperations,
 )
 from pavpen.geometry_calculator.vector_field_operations import VectorFieldOperations as VectorFieldOperations
 

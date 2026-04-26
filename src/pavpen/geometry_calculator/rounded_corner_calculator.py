@@ -13,8 +13,8 @@ from pavpen.geometry_calculator.faults import (
     AmbiguousComputationDueToPrecisionWarning,
     ImpossibleOutputGeometryError,
 )
+from pavpen.geometry_calculator.float_vector_field_operations import FloatVectorFieldOperations
 from pavpen.geometry_calculator.orthonormal_basis_calculator import OrthonormalBasisCalculator
-from pavpen.geometry_calculator.vector_field_float_operations import VectorFieldFloatOperations
 
 
 class RoundedCornerCalculatorComputedValueNames(Enum):
@@ -45,7 +45,7 @@ class RoundedCornerCalculator[Vector]:
 
     def __init__(
         self,
-        vector_field_operations: VectorFieldFloatOperations[Vector],
+        vector_field_operations: FloatVectorFieldOperations[Vector],
         previous_vertex: Vector,
         corner_vertex: Vector,
         next_vertex: Vector,

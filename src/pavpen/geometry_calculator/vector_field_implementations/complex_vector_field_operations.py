@@ -2,10 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
-from pavpen.geometry_calculator.vector_field_float_operations import VectorFieldFloatOperations
+from pavpen.geometry_calculator.float_vector_field_operations import FloatVectorFieldOperations
 
 
-class ComplexVectorFieldOperations(VectorFieldFloatOperations[complex]):
+class ComplexVectorFieldOperations(FloatVectorFieldOperations[complex]):
     """Treats complex numbers as 2-D vectors"""
 
     @property

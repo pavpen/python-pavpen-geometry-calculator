@@ -19,11 +19,11 @@ class CircleCalculator[Vector]:
     >>> import math
     >>> from pavpen.geometry_calculator import CircleCalculator
     >>> from pavpen.geometry_calculator.vector_field_implementations import (
-    ...     TupleVectorFieldFloatOperations,
+    ...     TupleFloatVectorFieldOperations,
     ... )
     >>>
     >>> CircleCalculator(
-    ...     vector_field_operations=TupleVectorFieldFloatOperations.for_2d(),
+    ...     vector_field_operations=TupleFloatVectorFieldOperations.for_2d(),
     ...     center=(0, 0),
     ...     radius=1,
     ...     x_hat=(1, 0),

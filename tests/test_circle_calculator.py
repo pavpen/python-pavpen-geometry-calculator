@@ -7,15 +7,15 @@ import math
 import pytest
 
 from pavpen.geometry_calculator.circle_calculator import CircleCalculator
-from pavpen.geometry_calculator.vector_field_implementations.tuple_vector_field_float_operations import (
-    TupleVectorFieldFloatOperations,
+from pavpen.geometry_calculator.vector_field_implementations.tuple_float_vector_field_operations import (
+    TupleFloatVectorFieldOperations,
 )
 
 
 class TestCircleCalculator:
     def test_point_at_angle_rad_returns_a_point(self):
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_2d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_2d()
         calculator = CircleCalculator(
             vector_field_operations=vector_field_operations,
             center=(0, 0),
@@ -32,7 +32,7 @@ class TestCircleCalculator:
 
     def test_point_at_angle_rad_accepts_a_negative_angle(self):
         # Setup
-        vector_field_operations = TupleVectorFieldFloatOperations.for_3d()
+        vector_field_operations = TupleFloatVectorFieldOperations.for_3d()
         calculator = CircleCalculator(
             vector_field_operations=vector_field_operations,
             center=(1, 0, 0),

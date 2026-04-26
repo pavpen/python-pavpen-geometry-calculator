@@ -30,11 +30,11 @@ To quickly get a sense of what using this package may be like:
    >>> import math
    >>> from pavpen.geometry_calculator import OrthonormalBasisCalculator
    >>> from pavpen.geometry_calculator.vector_field_implementations import (
-   ...    TupleVectorFieldFloatOperations,
+   ...    TupleFloatVectorFieldOperations,
    ... )
    >>>
    >>> OrthonormalBasisCalculator(
-   ...    vector_field_operations=TupleVectorFieldFloatOperations.for_3d(),
+   ...    vector_field_operations=TupleFloatVectorFieldOperations.for_3d(),
    ...    float_tolerance=1e-8,
    ...    points=((0, 0, 0), (0, 2, 0), (0, 0, -2)),
    ... ).calculate().basis_vectors
@@ -47,7 +47,7 @@ Notes
   allows treating existing objects as vectors without having to modify their
   inheritance hierarchy, or wrap them.
 
-  * In the above example `TupleVectorFieldFloatOperations.for_3d()` returns an
+  * In the above example `TupleFloatVectorFieldOperations.for_3d()` returns an
     object which treats a `tuple[float, float, float]` as a 3-dimensional
     orthonormal vector.
   * The `points` argument is an example of using such tuples to specify the

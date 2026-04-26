@@ -7,20 +7,20 @@ from typing import cast
 from pavpen.geometry_calculator.float_vector_field_operations import FloatVectorFieldOperations
 
 
-class TupleVectorFieldFloatOperations[Vector: tuple[float, ...]](FloatVectorFieldOperations[Vector]):
+class TupleFloatVectorFieldOperations[Vector: tuple[float, ...]](FloatVectorFieldOperations[Vector]):
     """Treats tuples of floats as vectors in an orthonormal space"""
 
     @staticmethod
-    def for_1d() -> "TupleVectorFieldFloatOperations[tuple[float]]":
-        return TupleVectorFieldFloatOperations[tuple[float]](component_count=1)
+    def for_1d() -> "TupleFloatVectorFieldOperations[tuple[float]]":
+        return TupleFloatVectorFieldOperations[tuple[float]](component_count=1)
 
     @staticmethod
-    def for_2d() -> "TupleVectorFieldFloatOperations[tuple[float, float]]":
-        return TupleVectorFieldFloatOperations[tuple[float, float]](component_count=2)
+    def for_2d() -> "TupleFloatVectorFieldOperations[tuple[float, float]]":
+        return TupleFloatVectorFieldOperations[tuple[float, float]](component_count=2)
 
     @staticmethod
-    def for_3d() -> "TupleVectorFieldFloatOperations[tuple[float, float,float]]":
-        return TupleVectorFieldFloatOperations[tuple[float, float, float]](component_count=3)
+    def for_3d() -> "TupleFloatVectorFieldOperations[tuple[float, float,float]]":
+        return TupleFloatVectorFieldOperations[tuple[float, float, float]](component_count=3)
 
     def __init__(self, component_count: int) -> None:
         super().__init__()

@@ -16,7 +16,8 @@ class OrthonormalBasisCalculator[Vector]:
     Example:
 
     >>> import math
-    >>> from pavpen.geometry_calculator.vector_field_implementations.tuple_vector_field_float_operations import (
+    >>> from pavpen.geometry_calculator import OrthonormalBasisCalculator
+    >>> from pavpen.geometry_calculator.vector_field_implementations import (
     ...     TupleVectorFieldFloatOperations,
     ... )
     >>>

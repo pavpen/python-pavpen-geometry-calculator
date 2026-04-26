@@ -6,6 +6,18 @@ from abc import ABC, abstractmethod
 
 
 class VectorFieldOperations[Scalar, Vector](ABC):
+    """Provides an implementation of vector operations for a given data type
+    which can be interpreted as storing vectors
+
+    Having this as a separate object allows decoupling the data type storing
+    vectors from an implementation of vector operations (such as addition,
+    scaling, norm).  This, in turn, allows us to treat existing data objects
+    (e.g., tuples) as vectors without having to patch their data type's
+    algebraic operations (e.g., a tuple multiplied by a scalar is already
+    defined), which may break other code relying on them, or adding a wrapper
+    type, which may introduce the need for serialization, and deserialization.
+    """
+
     @property
     @abstractmethod
     def additive_identity(self) -> Vector:
@@ -69,4 +81,9 @@ class VectorFieldOperations[Scalar, Vector](ABC):
     def normalized(self, value: Vector) -> Vector: ...
 
     @abstractmethod
-    def projection_length_on(self, projected: Vector, direction: Vector) -> Scalar: ...
+    def projection_length_on(self, projected: Vector, direction: Vector) -> Scalar:
+        """The norm of the component of the projection of *projected* on
+        *direction*
+        """
+
+        ...

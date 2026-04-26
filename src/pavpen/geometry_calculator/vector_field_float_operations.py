@@ -8,6 +8,14 @@ from pavpen.geometry_calculator.vector_field_operations import VectorFieldOperat
 
 
 class VectorFieldFloatOperations[Vector](VectorFieldOperations[float, Vector]):
+    """Base class for
+    :py:class:`~pavpen.geometry_calculator.vector_field_operations.VectorFieldOperations`
+    whose coordinates are :py:class:`float`\\ s
+
+    Knowing the type of the coordinates allows us to provide default
+    implementations for some properties, and methods.
+    """
+
     @property
     def multiplicative_negator(self) -> float:
         return -1

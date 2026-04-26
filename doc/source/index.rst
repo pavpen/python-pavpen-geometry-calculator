@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Geometry Calculator Documentation
-=================================
+Geometry Calculator
+===================
 
 Disparate utilities for calculating coordinates and other elements of
 geometric constructions.
@@ -20,7 +20,7 @@ Further Sections
 Example
 -------
 
-To quickly get a sense of what using this package may be like:
+What using this package may be like:
 
 .. doctest::
 

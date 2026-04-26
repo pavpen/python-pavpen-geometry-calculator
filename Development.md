@@ -35,6 +35,16 @@ hatch run doc:test
   hatch build
   ```
 
+## Building Documentation
+
+* See [doc/README.md](doc/README.md).
+* Run:
+
+  ```terminal
+  hatch run doc:clean
+  hatch run doc:build
+  ```
+
 ## Package Publication
 
 * Activate the Python development virtual environment from

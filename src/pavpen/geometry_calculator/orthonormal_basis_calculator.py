@@ -6,7 +6,7 @@ from typing import Self
 
 from pavpen.geometry_calculator.defaults import DEFAULT_TOLERANCE
 from pavpen.geometry_calculator.faults import CalculationPrecisionExceededError
-from pavpen.geometry_calculator.vector_field_float_operations import VectorFieldFloatOperations
+from pavpen.geometry_calculator.float_vector_field_operations import FloatVectorFieldOperations
 
 
 class OrthonormalBasisCalculator[Vector]:
@@ -31,7 +31,7 @@ class OrthonormalBasisCalculator[Vector]:
 
     def __init__(
         self,
-        vector_field_operations: VectorFieldFloatOperations[Vector],
+        vector_field_operations: FloatVectorFieldOperations[Vector],
         points: list[Vector],
         float_tolerance: float = DEFAULT_TOLERANCE,
     ) -> None:

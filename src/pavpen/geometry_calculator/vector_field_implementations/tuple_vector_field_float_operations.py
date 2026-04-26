@@ -4,10 +4,10 @@
 
 from typing import cast
 
-from pavpen.geometry_calculator.vector_field_float_operations import VectorFieldFloatOperations
+from pavpen.geometry_calculator.float_vector_field_operations import FloatVectorFieldOperations
 
 
-class TupleVectorFieldFloatOperations[Vector: tuple[float, ...]](VectorFieldFloatOperations[Vector]):
+class TupleVectorFieldFloatOperations[Vector: tuple[float, ...]](FloatVectorFieldOperations[Vector]):
     """Treats tuples of floats as vectors in an orthonormal space"""
 
     @staticmethod

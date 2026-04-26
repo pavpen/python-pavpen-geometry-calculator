@@ -4,10 +4,10 @@
 
 import pytest
 
-from pavpen.geometry_calculator.vector_field_float_operations import VectorFieldFloatOperations
+from pavpen.geometry_calculator.float_vector_field_operations import FloatVectorFieldOperations
 
 
-class UnimplementedVectorFieldFloatOperations[Vector](VectorFieldFloatOperations[Vector]):
+class UnimplementedFloatVectorFieldOperations[Vector](FloatVectorFieldOperations[Vector]):
     @property
     def additive_identity(self) -> Vector:
         raise NotImplementedError
@@ -28,10 +28,10 @@ class UnimplementedVectorFieldFloatOperations[Vector](VectorFieldFloatOperations
         raise NotImplementedError
 
 
-class TestVectorFieldFloatOperations:
+class TestFloatVectorFieldOperations:
     def test_norm_returns_a_value_corresponding_to_inner_product(self):
         # Setup
-        class SampleVectorFieldOperations(UnimplementedVectorFieldFloatOperations[tuple[float, float]]):
+        class SampleVectorFieldOperations(UnimplementedFloatVectorFieldOperations[tuple[float, float]]):
             def inner_multiplied(self, multiplicand1: tuple[float, float], multiplicand2: tuple[float, float]) -> float:
                 return multiplicand1[0] * multiplicand2[0] + multiplicand1[1] * multiplicand2[1]
 
@@ -42,7 +42,7 @@ class TestVectorFieldFloatOperations:
 
     def test_normalized_returns_a_unit_vector(self):
         # Setup
-        class SampleVectorFieldOperations(UnimplementedVectorFieldFloatOperations[tuple[float, float]]):
+        class SampleVectorFieldOperations(UnimplementedFloatVectorFieldOperations[tuple[float, float]]):
             def scaled(self, multiplicand: tuple[float, float], scalar: float) -> tuple[float, float]:
                 return (multiplicand[0] * scalar, multiplicand[1] * scalar)
 
@@ -56,7 +56,7 @@ class TestVectorFieldFloatOperations:
 
     def test_projection_length_on_calculates_a_positive_length(self):
         # Setup
-        class SampleVectorFieldOperations(UnimplementedVectorFieldFloatOperations[tuple[float, float]]):
+        class SampleVectorFieldOperations(UnimplementedFloatVectorFieldOperations[tuple[float, float]]):
             def inner_multiplied(self, multiplicand1: tuple[float, float], multiplicand2: tuple[float, float]) -> float:
                 return multiplicand1[0] * multiplicand2[0] + multiplicand1[1] * multiplicand2[1]
 
@@ -67,7 +67,7 @@ class TestVectorFieldFloatOperations:
 
     def test_projection_length_on_calculates_a_negative_length(self):
         # Setup
-        class SampleVectorFieldOperations(UnimplementedVectorFieldFloatOperations[tuple[float, float]]):
+        class SampleVectorFieldOperations(UnimplementedFloatVectorFieldOperations[tuple[float, float]]):
             def inner_multiplied(self, multiplicand1: tuple[float, float], multiplicand2: tuple[float, float]) -> float:
                 return multiplicand1[0] * multiplicand2[0] + multiplicand1[1] * multiplicand2[1]
 

@@ -7,7 +7,7 @@ import math
 from pavpen.geometry_calculator.vector_field_operations import VectorFieldOperations
 
 
-class VectorFieldFloatOperations[Vector](VectorFieldOperations[float, Vector]):
+class FloatVectorFieldOperations[Vector](VectorFieldOperations[float, Vector]):
     """Base class for
     :py:class:`~pavpen.geometry_calculator.vector_field_operations.VectorFieldOperations`
     whose coordinates are :py:class:`float`\\ s

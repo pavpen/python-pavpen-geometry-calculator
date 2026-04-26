@@ -6,8 +6,19 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 
+import inspect
+import itertools
+import sys
 import tomllib
+from collections.abc import Iterable
 from pathlib import Path
+from typing import TypeVar, cast
+
+import sphinx.addnodes
+import sphinx.domains
+import sphinx.errors
+import sphinx.ext.intersphinx
+from sphinx.application import Sphinx
 
 
 def get_version() -> str:
@@ -52,15 +63,17 @@ license_name = pyproject_dict["project"]["license"]
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
+needs_sphinx = "1.3"
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
 ]
+needs_extensions = {
+    "sphinx.ext.autodoc": "1.1",
+}
 
 # Extension configuration
-
 autosummary_generate = True  # Enable `sphinx.ext.autosummary`.
 
 # Generate documentation for imported symbols:
@@ -104,6 +117,9 @@ templates_path = ["theme-overrides/templates"]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
+# TODO(pavel.penev): Replace with https://github.com/jbms/sphinx-immaterial/
+#     when it becomes stable
+#
 # Borrow the Python documentation theme
 # <https://github.com/python/python-docs-theme>:
 html_theme = "furo"
@@ -115,3 +131,127 @@ html_context = {"license_name": license_name}
 
 html_favicon = None
 html_static_path = ["_static"]
+
+#
+# Work-arounds for Sphinx bugs, and missing features
+#
+
+
+def get_class_generic_parameters(class_obj: object) -> Iterable[TypeVar]:
+    try:
+        return cast("tuple[TypeVar, ...]", class_obj.__parameters__)
+    except AttributeError:
+        return []
+
+
+def get_module_generic_parameters(module_obj: object) -> Iterable[TypeVar]:
+    return itertools.chain.from_iterable(
+        get_class_generic_parameters(module_member)
+        for module_member in vars(module_obj).values()
+        if inspect.isclass(module_member)
+    )
+
+
+def get_class_qualified_name(class_obj: object) -> str:
+    module_name = class_obj.__module__
+    module_name_prefix = "" if module_name == "builtins" else f"{module_name}."
+
+    return f"{module_name_prefix}{class_obj.__name__}"
+
+
+def handle_autodoc_process_signature_adding_class_generic_parameters(
+    app: Sphinx,  # noqa: ARG001
+    obj_type: str,
+    name: str,
+    obj: object,  # noqa: ARG001
+    options: object,  # noqa: ARG001
+    signature: str | None,
+    return_annotation: str,
+) -> tuple[str | None, str]:
+    """Handles an
+    ["autodoc-process-signature" Sphinx autodoc event](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#event-autodoc-process-signature)
+
+    Provides a partial work-around implementation for
+    [autodoc for generic classes should include the type parameters #10568](https://github.com/sphinx-doc/sphinx/issues/10568)
+
+    Generic parameter bounds, and contraints in function, method, and class
+    signatures, are not fixed.
+    """
+
+    def format_generic_parameter_suffix(generic_parameter: TypeVar) -> str:
+        result = ""
+
+        constraints = generic_parameter.__constraints__
+        if len(constraints) > 0:
+            result += f": {tuple(str(c) for c in constraints)}"
+
+        bound = generic_parameter.__bound__
+        if bound is not None:
+            result += f": {bound}"
+
+        return result
+
+    def format_generic_parameter(generic_parameter: TypeVar) -> str:
+        return f"{generic_parameter}{format_generic_parameter_suffix(generic_parameter)}"
+
+    if obj_type == "class":
+        [module_name, class_name] = name.rsplit(".", maxsplit=1)
+        generic_parameter_list = ", ".join(
+            format_generic_parameter(parameter)
+            for parameter in get_class_generic_parameters(getattr(sys.modules[module_name], class_name))
+        )
+        if len(generic_parameter_list) > 0:
+            signature = f"[{generic_parameter_list}]{signature or ''}"
+
+    return (signature, return_annotation)
+
+
+def handle_warn_missing_reference_to_generic_parameter(
+    app: Sphinx,  # noqa: ARG001
+    domain: sphinx.domains.Domain,
+    node: sphinx.addnodes.pending_xref,
+) -> bool | None:
+    """Handles a
+    ["warn-missing-reference" Sphinx event](https://www.sphinx-doc.org/en/master/extdev/event_callbacks.html#event-warn-missing-reference)
+
+    Fixes:
+
+    ```
+    <unknown>:1: WARNING: py:class reference target not found: Vector [ref.class]
+    <unknown>:5: WARNING: py:obj reference target not found: typing.Vector [ref.obj]
+    ```
+
+    and
+
+    ```
+    <unknown>:1: WARNING: py:class reference target not found: Scalar [ref.class]
+    ```
+
+    which seem to be due to
+    [Use of TypeVar results in "reference target not found" error #10974](https://github.com/sphinx-doc/sphinx/issues/10974).
+    """
+
+    if domain.name != "py":
+        return
+    reftarget = cast("str | None", node.get("reftarget", None))
+    reftype = cast("str | None", node.get("reftype", None))
+    if reftarget is not None:
+        py_class_name = cast("str | None", node.get("py:class"))
+        py_module_name = cast("str | None", node.get("py:module"))
+        if py_module_name is not None and reftype in ("class", "obj"):
+            if py_class_name is None:
+                generic_parameters = get_module_generic_parameters(sys.modules[py_module_name])
+            else:
+                generic_parameters = get_class_generic_parameters(getattr(sys.modules[py_module_name], py_class_name))
+            referenced_symbol_name = reftarget.removeprefix("typing.")
+            if referenced_symbol_name in (str(p) for p in generic_parameters):
+                # This "missing-reference" is to a generic type parameter.
+                # Ignore it:
+                return True
+
+    return None
+
+
+def setup(app: Sphinx):
+    app.connect("autodoc-process-signature", handle_autodoc_process_signature_adding_class_generic_parameters)
+    app.connect("warn-missing-reference", handle_warn_missing_reference_to_generic_parameter)

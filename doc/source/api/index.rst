@@ -1,8 +1,7 @@
 API Documentation
 =================
 
-.. autosummary::
-   :toctree: generated
-   :recursive:
+.. toctree::
+   :maxdepth: 5
 
-   pavpen.geometry_calculator
+   pavpen/geometry_calculator/__init__

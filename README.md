@@ -10,6 +10,7 @@ constructions.
 * [Example](#example)
 * [Installation](#installation)
 * [License](#license)
+* [Documentation](#documentation)
 
 ## Example
 
@@ -51,3 +52,8 @@ pip install pavpen-geometry-calculator
 
 Geometry Calculator is distributed under the terms of the
 [MIT](https://spdx.org/licenses/MIT.html) license.
+
+## Documentation
+
+See the
+[API documentation site](https://pavpen.github.io/python-pavpen-geometry-calculator/).

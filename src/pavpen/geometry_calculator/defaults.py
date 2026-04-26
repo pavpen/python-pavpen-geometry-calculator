@@ -5,3 +5,4 @@
 from typing import Final
 
 DEFAULT_TOLERANCE: Final[float] = 1e-9
+"""Default calculation error tolerance"""

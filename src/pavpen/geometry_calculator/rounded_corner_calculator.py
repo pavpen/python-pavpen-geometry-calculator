@@ -14,7 +14,6 @@ from pavpen.geometry_calculator.faults import (
     ImpossibleOutputGeometryError,
 )
 from pavpen.geometry_calculator.orthonormal_basis_calculator import OrthonormalBasisCalculator
-from pavpen.geometry_calculator.planar_rotation_direction import PlanarRotationDirection
 from pavpen.geometry_calculator.vector_field_float_operations import VectorFieldFloatOperations
 
 
@@ -27,6 +26,23 @@ class RoundedCornerCalculatorComputedValueNames(Enum):
 
 
 class RoundedCornerCalculator[Vector]:
+    """Calculates the parameters of a rounded corner's circular arc
+
+    The non-rounded corner, for which a rounded corner arc is to be
+    calculated is determined by *previous_vertex*, *corner_vertex*, and
+    *next_vertex*.
+
+    If *x_hat*, and *y_hat* are specified, they define the coordinate
+    system basis for outputs, such as the center of the rouded corner
+    circle, and the start and end point of the rounded corner arc.
+
+    :param vector_field_operations: defines how to calculate vector
+       operations for vectors, such as *previous_vertex*, *corner_vertex*, and
+       *next_vertex*
+
+    :param radius: the radius of the rounded corner's circle
+    """
+
     def __init__(
         self,
         vector_field_operations: VectorFieldFloatOperations[Vector],
@@ -34,7 +50,6 @@ class RoundedCornerCalculator[Vector]:
         corner_vertex: Vector,
         next_vertex: Vector,
         radius: float,
-        arc_direction: PlanarRotationDirection | None = None,
         x_hat: Vector | None = None,
         y_hat: Vector | None = None,
         float_tolerance: float = DEFAULT_TOLERANCE,
@@ -45,7 +60,6 @@ class RoundedCornerCalculator[Vector]:
         self._corner_vertex = corner_vertex
         self._next_vertex = next_vertex
         self._radius = radius
-        self._arc_direction = arc_direction
         self._x_hat = x_hat
         self._y_hat = y_hat
 
@@ -72,6 +86,16 @@ class RoundedCornerCalculator[Vector]:
             self.calculated_y_hat = y_hat
 
     def calculate(self) -> Self:
+        """Calculates, and sets the folowing output parameters of the rounded
+        corner arc as attributes of ``self``:
+
+        * ``center``
+        * ``radius``
+        * ``arc_start``
+        * ``arc_midpoint``
+        * ``arc_end``
+        """
+
         self._calculate_basis()
         vec = self._vector_field_operations
         float_tolerance = self._float_tolerance

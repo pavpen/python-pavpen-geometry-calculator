@@ -4,6 +4,14 @@
 
 
 class CalculationPrecisionExceededError(ValueError):
+    """Raised when a computation in algorithm step exceeds the maximum allowed
+    calculation error (floating point tolerance)
+
+    For example, if you try to normalize a vector whose norm is sufficiently
+    close to zero using float operations, the result may be a vector whose
+    coordinates have 1 significant digit, or compute as infinite.
+    """
+
     def __init__(self, tolerance: float, calculation_error: float, value_name: str | None = None) -> None:
         self._tolerance = tolerance
         self._calculation_error = calculation_error
@@ -39,11 +47,37 @@ class CalculationPrecisionExceededError(ValueError):
 
 
 class ImpossibleOutputGeometryError(ValueError):
+    """Raised when the output of a calculation is physically impossible
+
+    E.g., a line with a negative length, a sphere with a negative radius, etc.
+    """
+
     def __init__(self, message: str) -> None:
         super().__init__(message)
 
 
 class AmbiguousComputationDueToPrecisionWarning(RuntimeWarning):
+    """Raised when a calculation may produce more than possible output (e.g.,
+    having the center of an output circle on one side of a given line, or the
+    other), but the calculation failed to unambiguously distinguish which of
+    the possible alternatives to return, because the difference between the
+    distinguishing factors is within the calculation error (floating point
+    tolerance).
+
+    As an example of such a calculation, you can consider determining the
+    the point, diametrically opposite the second of 3 input points, which
+    define the circle.  If none of the 3 input points coincide, but they lie on
+    a line, the radius of the circle becomes infinite, and there are two
+    solutions, one on each side of the line, on a perpendicular to the second
+    of the 3 input points.
+
+    If the 3 input points given to the calculation are on a line, or
+    sufficiently close to a line (within the floating point tolerance), the
+    calculation may return one of the possible results, but raise this warning,
+    because the other possible solution, is also within the floating point
+    tolerance of the input.
+    """
+
     def __init__(
         self,
         ambiguous_value_names: list[str],

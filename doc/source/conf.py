@@ -6,17 +6,22 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 
+import enum
 import inspect
 import itertools
+import subprocess
 import sys
 import tomllib
+import warnings
 from collections.abc import Iterable
 from pathlib import Path
-from typing import TypeVar, cast
+from typing import Final, TypeVar, cast
 
 import sphinx.addnodes
 import sphinx.domains
 from sphinx.application import Sphinx
+
+GIT_PATH: Final[str] = "git"
 
 
 def get_version() -> str:
@@ -41,8 +46,10 @@ def get_version() -> str:
     return result
 
 
+project_path = Path(__file__).parent.parent.parent
+
 # Parse <../../pyproject.toml>, so we can re-use values from it.
-with open(Path(__file__).parent.parent.parent / "pyproject.toml", "rb") as pyproject_file:
+with open(project_path / "pyproject.toml", "rb") as pyproject_file:
     pyproject_dict = tomllib.load(pyproject_file)
 
 # -- Project information -----------------------------------------------------
@@ -66,6 +73,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.linkcode",
 ]
 needs_extensions = {
     "sphinx.ext.autodoc": "1.1",
@@ -131,10 +139,102 @@ html_favicon = None
 html_static_path = ["_static"]
 
 #
+# Plug-in code configuration
+#
+source_url = pyproject_dict["project"]["urls"]["Source"].removesuffix("/")
+is_repository_dirty_command = subprocess.run(
+    [GIT_PATH, "status", "--porcelain"], shell=False, check=True, capture_output=True, encoding="utf-8"
+)
+is_repository_dirty = is_repository_dirty_command.stdout.strip() != ""
+if is_repository_dirty:
+    warnings.warn(
+        RuntimeWarning(
+            f"Current repository is dirty!  Links to documentation source code "
+            f"may be invalid: {is_repository_dirty_command.args} output: "
+            f"stdout: {is_repository_dirty_command.stdout} "
+            f"stderr: {is_repository_dirty_command.stderr}"
+        ),
+        stacklevel=1,
+    )
+long_commit_id = subprocess.run(
+    [GIT_PATH, "rev-parse", "HEAD"], shell=False, check=True, capture_output=True, encoding="utf-8"
+).stdout.rstrip()
+
+
+def get_symbol_in_module(module: object, symbol_name: str) -> object:
+    result = module
+    for name_component in symbol_name.split("."):
+        result = getattr(result, name_component)
+
+    return result
+
+
+def linkcode_resolve(domain: str, info: dict[str, str]) -> str | None:
+    """Returns the URL corresponding to a code symbol for links to source code
+    in the documentation
+
+    * Called by the `sphinx.ext.linkcode` extension.  See
+      <https://www.sphinx-doc.org/en/master/usage/extensions/linkcode.html#configuration>.
+
+    Links to properties, enums, and variables are not supported.  They're
+    replaced with links to the parent supported symbol, such as the containing
+    class, or module.
+    """
+
+    if domain != "py":
+        message = f"Unsupported Sphinx domain: {domain!r}"
+        raise ValueError(message)
+
+    module_name = info["module"]
+    if len(module_name) < 0:
+        message = f"Symbol with no module: {info!r}"
+        raise ValueError(message)
+    symbol_name = info["fullname"]
+
+    module = sys.modules[module_name]
+    symbol = get_symbol_in_module(module, symbol_name)
+    # TODO(pavel.penev): Switch to using `ast` for obtating the line numbers,
+    #     of symbol definitions.
+    if isinstance(symbol, property):
+        # `inspect.source_path` doesn't support properties, we link to the
+        # class containing the property instead:
+        [parent_symbol_name, _] = symbol_name.rsplit(".", maxsplit=1)
+        symbol = get_symbol_in_module(module, parent_symbol_name)
+    if isinstance(symbol, enum.EnumType) or isinstance(symbol.__class__, enum.EnumType):
+        # `inspect.source_path` doesn't support enum classes, or constanets, we
+        # link to the containing module instead:
+        symbol = module
+    if (
+        not inspect.ismodule(symbol)
+        and not inspect.isclass(symbol)
+        and not inspect.ismethod(symbol)
+        and not inspect.isfunction(symbol)
+        and not inspect.istraceback(symbol)
+        and not inspect.isframe(symbol)
+        and not inspect.iscode(symbol)
+    ):
+        # We may have obtained the value of the symbol, rather than an object
+        # that can give us information about the symbol definiton.  Link to the
+        # containing symbol instead:
+        symbol_name_components = symbol_name.rsplit(".", maxsplit=1)
+        if len(symbol_name_components) < 2:  # noqa: PLR2004
+            symbol = module
+        else:
+            [parent_symbol_name, _] = symbol_name_components
+            symbol = get_symbol_in_module(module, parent_symbol_name)
+    relative_source_path = Path(inspect.getsourcefile(symbol)).relative_to(project_path)
+    (source_lines, start_line_number) = inspect.getsourcelines(symbol)
+    start_line_number = max(start_line_number, 1)
+    end_line_number = start_line_number + len(source_lines) - 1
+
+    return (
+        f"{source_url}/blob/{long_commit_id}/{relative_source_path.as_posix()}#L{start_line_number}-L{end_line_number}"
+    )
+
+
+#
 # Work-arounds for Sphinx bugs, and missing features
 #
-
-
 def get_class_generic_parameters(class_obj: object) -> Iterable[TypeVar]:
     try:
         return cast("tuple[TypeVar, ...]", class_obj.__parameters__)

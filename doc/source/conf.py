@@ -16,8 +16,6 @@ from typing import TypeVar, cast
 
 import sphinx.addnodes
 import sphinx.domains
-import sphinx.errors
-import sphinx.ext.intersphinx
 from sphinx.application import Sphinx
 
 

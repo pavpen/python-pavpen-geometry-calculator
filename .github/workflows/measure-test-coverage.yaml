@@ -40,16 +40,20 @@ jobs:
           EOF
           } &&
           hatch run test-coverage:coverage report --format=markdown --show-missing >> tests/reports/coverage.md
+      - name: Download a code coverage badge
+        run: "cd content && hatch run build-scripts/save_codecov_badge.py"
       - name: Checkout Wiki
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository }}.wiki
           path: wiki-content
           # token: ${{ secrets.GH_PAT }}
-      - name: Add coverage Markdown report publication artefact
+      - name: Add code coverage Markdown report publication artefact
         run: |
           mkdir -p wiki-content/status/tests/reports/ &&
           cp -f content/tests/reports/coverage.md wiki-content/status/tests/reports/
+      - name: Add code coverage badge publication artefact
+        run: "cp -f content/tests/reports/codecov-badge.svg wiki-content/status/tests/reports/"
       - name: Push to Wiki
         run: |
           cd wiki-content

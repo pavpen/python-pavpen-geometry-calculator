@@ -36,6 +36,7 @@ Issues = "https://github.com/pavpen/python-pavpen-geometry-calculator/issues"
 Source = "https://github.com/pavpen/python-pavpen-geometry-calculator"
 
 [tool.coverage.run]
+source=["src/"]
 source_pkgs = ["pavpen_geometry_calculator", "tests"]
 branch = true
 parallel = true

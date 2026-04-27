@@ -22,14 +22,15 @@ class CircleCalculator[Vector]:
     ...     TupleFloatVectorFieldOperations,
     ... )
     >>>
-    >>> CircleCalculator(
+    >>> (x, y) = CircleCalculator(
     ...     vector_field_operations=TupleFloatVectorFieldOperations.for_2d(),
     ...     center=(0, 0),
     ...     radius=1,
     ...     x_hat=(1, 0),
     ...     y_hat=(0, 1),
     ... ).point_at_angle_rad(math.pi / 4)
-    (0.7071067811865476, 0.7071067811865476)
+    >>> print(f"({x:.4f}, {y:.4f})")
+    (0.7071, 0.7071)
     """
 
     def __init__(

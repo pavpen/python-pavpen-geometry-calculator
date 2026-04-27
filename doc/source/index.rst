@@ -16,6 +16,7 @@ Further Sections
    :maxdepth: 2
 
    api/index
+   Source Code <https://github.com/pavpen/python-pavpen-geometry-calculator>
 
 Example
 -------

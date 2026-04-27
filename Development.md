@@ -25,6 +25,12 @@ hatch test
 hatch run doc:test
 ```
 
+## Check Test Coverage
+
+```terminal
+hatch test --cover
+```
+
 ## Packaging
 
 * Activate the Python development virtual environment from

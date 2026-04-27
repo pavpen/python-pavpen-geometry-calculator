@@ -36,7 +36,7 @@ Issues = "https://github.com/pavpen/python-pavpen-geometry-calculator/issues"
 Source = "https://github.com/pavpen/python-pavpen-geometry-calculator"
 
 [tool.coverage.run]
-source=["src/"]
+source = ["src/"]
 source_pkgs = ["pavpen_geometry_calculator", "tests"]
 branch = true
 parallel = true
@@ -91,6 +91,14 @@ extra-dependencies = ["mypy>=1.0.0"]
 
 [tool.hatch.envs.types.scripts]
 check = "mypy --version --install-types --explicit-package-bases --non-interactive {args:src/pavpen/geometry_calculator tests}"
+
+[tool.hatch.envs.test-coverage]
+detached = true
+dependencies = ["coverage"]
+
+[tool.hatch.envs.test-coverage.scripts]
+to_html = "coverage html --directory=tests/reports/coverage-html"
+clean = "python build-scripts/test_coverage_clean.py"
 
 [tool.hatch.version]
 source = "vcs"

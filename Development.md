@@ -31,6 +31,15 @@ hatch run doc:test
 hatch test --cover
 ```
 
+To view an HTML coverage report, after the command above, run:
+
+```terminal
+hatch run test-coverage:to_html
+```
+
+The report should be at
+[tests/reports/coverage-html/index.html](tests/reports/coverage-html/index.html).
+
 ## Packaging
 
 * Activate the Python development virtual environment from

@@ -17,6 +17,7 @@ Further Sections
 
    api/index
    Source Code <https://github.com/pavpen/python-pavpen-geometry-calculator>
+   license
 
 Example
 -------

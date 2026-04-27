@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
+import pytest
+
 from pavpen.geometry_calculator.vector_field_operations import VectorFieldOperations
 
 
@@ -37,6 +39,78 @@ class UnimplementedVectorFieldOperations[Scalar, Vector](VectorFieldOperations[S
 
     def projection_length_on(self, projected: Vector, direction: Vector) -> Scalar:
         raise NotImplementedError
+
+
+class TestUnimplementedVectorFieldOperations:
+    """Code coverage include tests, so we test our test helpers.
+
+    See the tip in
+    [Exclude code from test coverage](https://python-basics-tutorial.readthedocs.io/en/latest/test/pytest/coverage.html#exclude-code-from-test-coverage)
+    """
+
+    def test_additive_identity_throws(self):
+        # Setup
+        operations = UnimplementedVectorFieldOperations[float, complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            _ = operations.additive_identity
+
+    def test_multiplicative_negator_throws(self):
+        # Setup
+        operations = UnimplementedVectorFieldOperations[float, complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            _ = operations.multiplicative_negator
+
+    def test_added_throws(self):
+        # Setup
+        operations = UnimplementedVectorFieldOperations[float, complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.added(3 + 4j, 5 + 6j)
+
+    def test_scaled_throws(self):
+        # Setup
+        operations = UnimplementedVectorFieldOperations[float, complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.scaled(3 + 4j, 7)
+
+    def test_inner_multiplied_throws(self):
+        # Setup
+        operations = UnimplementedVectorFieldOperations[float, complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.inner_multiplied(3 + 4j, 7 + 8j)
+
+    def test_norm_throws(self):
+        # Setup
+        operations = UnimplementedVectorFieldOperations[float, complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.norm(7 + 8j)
+
+    def test_normalized_throws(self):
+        # Setup
+        operations = UnimplementedVectorFieldOperations[float, complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.normalized(7 + 8j)
+
+    def test_projection_length_on_throws(self):
+        # Setup
+        operations = UnimplementedVectorFieldOperations[float, complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.projection_length_on(7 + 8j, 9 + 10j)
 
 
 class TestVectorFieldOperations:

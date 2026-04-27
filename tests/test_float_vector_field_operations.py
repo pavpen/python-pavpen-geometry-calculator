@@ -28,6 +28,54 @@ class UnimplementedFloatVectorFieldOperations[Vector](FloatVectorFieldOperations
         raise NotImplementedError
 
 
+class TestUnimplementedFloatVectorFieldOperations:
+    """Code coverage include tests, so we test our test helpers
+
+    See the tip in
+    [Exclude code from test coverage](https://python-basics-tutorial.readthedocs.io/en/latest/test/pytest/coverage.html#exclude-code-from-test-coverage)
+    """
+
+    def test_additive_identity_throws(self):
+        # Setup
+        operations = UnimplementedFloatVectorFieldOperations[complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            _ = operations.additive_identity
+
+    def test_negated_throws(self):
+        # Setup
+        operations = UnimplementedFloatVectorFieldOperations[complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.negated(3 + 4j)
+
+    def test_added_throws(self):
+        # Setup
+        operations = UnimplementedFloatVectorFieldOperations[complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.added(3 + 4j, 5 + 6j)
+
+    def test_subtracted_throws(self):
+        # Setup
+        operations = UnimplementedFloatVectorFieldOperations[complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.subtracted(3 + 4j, 5 + 6j)
+
+    def test_inner_multiplied_throws(self):
+        # Setup
+        operations = UnimplementedFloatVectorFieldOperations[complex]()
+
+        # Act, and verify
+        with pytest.raises(NotImplementedError):
+            operations.inner_multiplied(3 + 4j, 5 + 6j)
+
+
 class TestFloatVectorFieldOperations:
     def test_norm_returns_a_value_corresponding_to_inner_product(self):
         # Setup
@@ -37,7 +85,7 @@ class TestFloatVectorFieldOperations:
 
         vector_field_operations = SampleVectorFieldOperations()
 
-        # Act and verify
+        # Act, and verify
         assert vector_field_operations.norm((3, 4)) == pytest.approx(5)
 
     def test_normalized_returns_a_unit_vector(self):
@@ -51,7 +99,7 @@ class TestFloatVectorFieldOperations:
 
         vector_field_operations = SampleVectorFieldOperations()
 
-        # Act and verify
+        # Act, and verify
         assert vector_field_operations.normalized((3, -4)) == pytest.approx((3.0 / 5.0, -4.0 / 5.0))
 
     def test_projection_length_on_calculates_a_positive_length(self):
@@ -62,7 +110,7 @@ class TestFloatVectorFieldOperations:
 
         vector_field_operations = SampleVectorFieldOperations()
 
-        # Act and verify
+        # Act, and verify
         assert vector_field_operations.projection_length_on((3, 4), (0, 1)) == pytest.approx(4)
 
     def test_projection_length_on_calculates_a_negative_length(self):
@@ -73,5 +121,5 @@ class TestFloatVectorFieldOperations:
 
         vector_field_operations = SampleVectorFieldOperations()
 
-        # Act and verify
+        # Act, and verify
         assert vector_field_operations.projection_length_on((3, 4), (0, -1)) == pytest.approx(-4)

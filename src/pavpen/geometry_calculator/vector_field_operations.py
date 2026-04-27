@@ -25,7 +25,8 @@ class VectorFieldOperations[Scalar, Vector](ABC):
         `x + v = v`
         """
 
-        ...
+        message = "override in a derived class"
+        raise NotImplementedError(message)
 
     @property
     @abstractmethod
@@ -34,7 +35,8 @@ class VectorFieldOperations[Scalar, Vector](ABC):
         `v * x + v = 0`
         """
 
-        ...
+        message = "override in a derived class"
+        raise NotImplementedError(message)
 
     def negated(self, value: Vector) -> Vector:
         return self.scaled(value, self.multiplicative_negator)
@@ -43,7 +45,8 @@ class VectorFieldOperations[Scalar, Vector](ABC):
     def added(self, addend1: Vector, addend2: Vector) -> Vector:
         """Return the vector sum of `addend1`, and `addend2`"""
 
-        ...
+        message = "override in a derived class"
+        raise NotImplementedError(message)
 
     def summed(self, addend1: Vector, *rest_addends: Vector) -> Vector:
         result = addend1
@@ -59,7 +62,8 @@ class VectorFieldOperations[Scalar, Vector](ABC):
     def scaled(self, multiplicand: Vector, scalar: Scalar) -> Vector:
         """Returns `multiplicand` scaled (multiplied) by `scalar`"""
 
-        ...
+        message = "override in a derived class"
+        raise NotImplementedError(message)
 
     @abstractmethod
     def inner_multiplied(self, multiplicand1: Vector, multiplicand2: Vector) -> Scalar:
@@ -72,13 +76,18 @@ class VectorFieldOperations[Scalar, Vector](ABC):
         if the projeciton endpoint is in the opposite direction of the vector).
         """
 
-        ...
+        message = "override in a derived class"
+        raise NotImplementedError(message)
 
     @abstractmethod
-    def norm(self, value: Vector) -> Scalar: ...
+    def norm(self, value: Vector) -> Scalar:
+        message = "override in a derived class"
+        raise NotImplementedError(message)
 
     @abstractmethod
-    def normalized(self, value: Vector) -> Vector: ...
+    def normalized(self, value: Vector) -> Vector:
+        message = "override in a derived class"
+        raise NotImplementedError(message)
 
     @abstractmethod
     def projection_length_on(self, projected: Vector, direction: Vector) -> Scalar:
@@ -86,4 +95,5 @@ class VectorFieldOperations[Scalar, Vector](ABC):
         *direction*
         """
 
-        ...
+        message = "override in a derived class"
+        raise NotImplementedError(message)

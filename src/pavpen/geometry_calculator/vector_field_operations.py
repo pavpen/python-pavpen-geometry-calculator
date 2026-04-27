@@ -90,9 +90,12 @@ class VectorFieldOperations[Scalar, Vector](ABC):
         raise NotImplementedError(message)
 
     @abstractmethod
-    def projection_length_on(self, projected: Vector, direction: Vector) -> Scalar:
+    def projection_length_along(self, projected: Vector, direction: Vector) -> Scalar:
         """The norm of the component of the projection of *projected* on
         *direction*
+
+        We recommend always calling this method with keyword arguments, since
+        *projected*, and *direction* can easily be confused when unnamed.
         """
 
         message = "override in a derived class"

@@ -111,7 +111,7 @@ class TestFloatVectorFieldOperations:
         vector_field_operations = SampleVectorFieldOperations()
 
         # Act, and verify
-        assert vector_field_operations.projection_length_on((3, 4), (0, 1)) == pytest.approx(4)
+        assert vector_field_operations.projection_length_along((3, 4), (0, 1)) == pytest.approx(4)
 
     def test_projection_length_on_calculates_a_negative_length(self):
         # Setup
@@ -122,4 +122,4 @@ class TestFloatVectorFieldOperations:
         vector_field_operations = SampleVectorFieldOperations()
 
         # Act, and verify
-        assert vector_field_operations.projection_length_on((3, 4), (0, -1)) == pytest.approx(-4)
+        assert vector_field_operations.projection_length_along((3, 4), (0, -1)) == pytest.approx(-4)

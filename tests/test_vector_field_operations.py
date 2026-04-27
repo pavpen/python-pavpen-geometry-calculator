@@ -37,8 +37,8 @@ class UnimplementedVectorFieldOperations[Scalar, Vector](VectorFieldOperations[S
     def normalized(self, value: Vector) -> Vector:
         return super().normalized(value)
 
-    def projection_length_on(self, projected: Vector, direction: Vector) -> Scalar:
-        return super().projection_length_on(projected=projected, direction=direction)
+    def projection_length_along(self, projected: Vector, direction: Vector) -> Scalar:
+        return super().projection_length_along(projected=projected, direction=direction)
 
 
 class TestVectorFieldOperationsDefaultImplementations:
@@ -112,7 +112,7 @@ class TestVectorFieldOperationsDefaultImplementations:
 
         # Act, and verify
         with pytest.raises(NotImplementedError):
-            operations.projection_length_on(7 + 8j, 9 + 10j)
+            operations.projection_length_along(7 + 8j, 9 + 10j)
 
 
 class TestVectorFieldOperations:

@@ -9,14 +9,52 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to this repository's GitHub Wiki
+permissions:
+  contents: write
+
 jobs:
-  test:
+  test-and-publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-    - name: Install dependencies
-      run: "python -m pip install --upgrade hatch"
-    - name: Output a test coverage report
-      run: "hatch test --cover"
+      - uses: actions/checkout@v4
+        with:
+          path: content
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+      - name: Install dependencies
+        run: "python -m pip install --upgrade hatch"
+      - name: Collect test coverage data
+        run: "cd content && hatch test --cover"
+      - name: Output a test coverage Markdown report (GitHub Wiki doesn't accept HTML)
+        run: |
+          cd content &&
+          mkdir -p tests/reports &&
+          { cat <<EOF > tests/reports/coverage.md
+          # Test Coverage
+
+          * Commit: [${{ github.sha }}](${{ github.serverUrl }}/${{ github.repository }}/blob/${{ github.sha }})
+          * From ${{ github.ref_type }}: \`${{ github.ref_name }}\`
+          * Time stamp: $(date -Iseconds)
+
+          EOF
+          } &&
+          hatch run test-coverage:coverage report --format=markdown --show-missing >> tests/reports/coverage.md
+      - name: Checkout Wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: wiki-content
+          # token: ${{ secrets.GH_PAT }}
+      - name: Add coverage Markdown report publication artefact
+        run: |
+          mkdir -p wiki-content/status/tests/reports/ &&
+          cp -f content/tests/reports/coverage.md wiki-content/status/tests/reports/
+      - name: Push to Wiki
+        run: |
+          cd wiki-content
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Update repository status from GitHub Action"
+          git push

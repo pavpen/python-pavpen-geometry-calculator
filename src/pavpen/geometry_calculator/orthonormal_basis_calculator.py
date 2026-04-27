@@ -38,7 +38,7 @@ class OrthonormalBasisCalculator[Vector]:
         self._vector_field_operations = vector_field_operations
         self._points = points
         if len(points) < 1:
-            message = f"The `points` argument must contain, at least, one element.  len(points): {len(points)}"
+            message = f"The `points` argument must contain at least one element.  len(points): {len(points)}"
             raise ValueError(message)
         self._float_tolerance = float_tolerance
 
@@ -64,7 +64,7 @@ class OrthonormalBasisCalculator[Vector]:
         except ValueError as e:
             e.add_note(
                 f"The `points` collection in "
-                f"{OrthonormalBasisCalculator.__name__} must contain, at "
+                f"{OrthonormalBasisCalculator.__name__} must contain at "
                 f"least one element.  len(points): {len(points)}"
             )
             raise

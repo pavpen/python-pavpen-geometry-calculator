@@ -10,42 +10,44 @@ from pavpen.geometry_calculator.vector_field_operations import VectorFieldOperat
 class UnimplementedVectorFieldOperations[Scalar, Vector](VectorFieldOperations[Scalar, Vector]):
     @property
     def additive_identity(self) -> Vector:
-        raise NotImplementedError
+        return super().additive_identity
 
     @property
     def multiplicative_negator(self) -> Scalar:
-        raise NotImplementedError
+        return super().multiplicative_negator
 
     def negated(self, value: Vector) -> Vector:
         return self.scaled(value, self.multiplicative_negator)
 
     def added(self, addend1: Vector, addend2: Vector) -> Vector:
-        raise NotImplementedError
+        return super().added(addend1, addend2)
 
     def subtracted(self, diminuend: Vector, subtrahend: Vector) -> Vector:
         return self.added(diminuend, self.negated(subtrahend))
 
     def scaled(self, multiplicand: Vector, scalar: Scalar) -> Vector:
-        raise NotImplementedError
+        return super().scaled(multiplicand=multiplicand, scalar=scalar)
 
     def inner_multiplied(self, multiplicand1: Vector, multiplicand2: Vector) -> Scalar:
-        raise NotImplementedError
+        return super().inner_multiplied(multiplicand1, multiplicand2)
 
     def norm(self, value: Vector) -> Scalar:
-        raise NotImplementedError
+        return super().norm(value)
 
     def normalized(self, value: Vector) -> Vector:
-        raise NotImplementedError
+        return super().normalized(value)
 
     def projection_length_on(self, projected: Vector, direction: Vector) -> Scalar:
-        raise NotImplementedError
+        return super().projection_length_on(projected=projected, direction=direction)
 
 
-class TestUnimplementedVectorFieldOperations:
-    """Code coverage include tests, so we test our test helpers.
+class TestVectorFieldOperationsDefaultImplementations:
+    """Tests the default implementations in [VectorFieldOperations],
+    to which [UnimplementedVectorFieldOperations] forwards method calls
 
-    See the tip in
-    [Exclude code from test coverage](https://python-basics-tutorial.readthedocs.io/en/latest/test/pytest/coverage.html#exclude-code-from-test-coverage)
+    Also, code coverage include tests, so we test our
+    [UnimplementedVectorFieldOperations] helper class.  (See the tip in
+    [Exclude code from test coverage](https://python-basics-tutorial.readthedocs.io/en/latest/test/pytest/coverage.html#exclude-code-from-test-coverage).)
     """
 
     def test_additive_identity_throws(self):

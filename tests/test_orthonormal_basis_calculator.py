@@ -20,14 +20,32 @@ class TestOrthonormalBasisCalculator:
         vector_field_operations = TupleFloatVectorFieldOperations.for_1d()
 
         # Act, and verify
-        with pytest.raises(ValueError, match=r"The `points` argument must contain, at least, one element."):
+        with pytest.raises(ValueError, match=r"The `points` argument must contain at least one element."):
             OrthonormalBasisCalculator(
                 vector_field_operations=vector_field_operations,
                 float_tolerance=1e-8,
                 points=[],
             )
 
-    def test_calculate_raises_on_redundant_points(self):
+    def test_calculate_throws_on_empty_points_collection(self):
+        # Setup
+        vector_field_operations = TupleFloatVectorFieldOperations.for_1d()
+        points = [(3.0,)]
+        calculator = OrthonormalBasisCalculator(
+            vector_field_operations=vector_field_operations,
+            float_tolerance=1e-8,
+            points=points,
+        )
+
+        # Act, and verify
+        points.clear()
+        with pytest.raises(
+            ValueError,
+            match=r"The `points` collection in OrthonormalBasisCalculator must contain at least one element.",
+        ):
+            calculator.calculate()
+
+    def test_calculate_throws_on_redundant_points(self):
         # Setup
         vector_field_operations = TupleFloatVectorFieldOperations.for_3d()
         calculator = OrthonormalBasisCalculator(

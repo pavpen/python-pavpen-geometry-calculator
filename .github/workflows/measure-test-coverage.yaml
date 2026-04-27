@@ -33,6 +33,8 @@ jobs:
           { cat <<EOF > tests/reports/coverage.md
           # Test Coverage
 
+          ![Code coverage badge graphic](https://raw.githubusercontent.com/wiki/pavpen/python-pavpen-geometry-calculator/status/tests/reports/codecov-badge.svg)
+
           * Commit: [${{ github.sha }}](${{ github.serverUrl }}/${{ github.repository }}/blob/${{ github.sha }})
           * From ${{ github.ref_type }}: \`${{ github.ref_name }}\`
           * Time stamp: $(date -Iseconds)

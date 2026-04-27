@@ -26,5 +26,5 @@ class FloatVectorFieldOperations[Vector](VectorFieldOperations[float, Vector]):
     def normalized(self, value: Vector) -> Vector:
         return self.scaled(value, 1.0 / self.norm(value))
 
-    def projection_length_on(self, projected: Vector, direction: Vector) -> float:
+    def projection_length_along(self, projected: Vector, direction: Vector) -> float:
         return self.inner_multiplied(projected, direction) / self.norm(direction)

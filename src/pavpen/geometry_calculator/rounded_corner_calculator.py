@@ -108,12 +108,12 @@ class RoundedCornerCalculator[Vector]:
         corner_to_previous_vertex_vector = vec.subtracted(previous_vertex, corner_vertex)
         corner_to_next_vertex_vector = vec.subtracted(next_vertex, corner_vertex)
         corner_to_previous_vertex_angle_rad = math.atan2(
-            vec.projection_length_on(direction=self.y_hat, projected=corner_to_previous_vertex_vector),
-            vec.projection_length_on(direction=self.x_hat, projected=corner_to_previous_vertex_vector),
+            vec.projection_length_along(direction=self.y_hat, projected=corner_to_previous_vertex_vector),
+            vec.projection_length_along(direction=self.x_hat, projected=corner_to_previous_vertex_vector),
         )
         corner_to_next_vertex_angle_rad = math.atan2(
-            vec.projection_length_on(direction=self.y_hat, projected=corner_to_next_vertex_vector),
-            vec.projection_length_on(direction=self.x_hat, projected=corner_to_next_vertex_vector),
+            vec.projection_length_along(direction=self.y_hat, projected=corner_to_next_vertex_vector),
+            vec.projection_length_along(direction=self.x_hat, projected=corner_to_next_vertex_vector),
         )
 
         edge_to_edge_angle_rad = math.fabs(corner_to_previous_vertex_angle_rad - corner_to_next_vertex_angle_rad)

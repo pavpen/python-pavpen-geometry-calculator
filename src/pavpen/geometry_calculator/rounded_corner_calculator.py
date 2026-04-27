@@ -64,6 +64,8 @@ class RoundedCornerCalculator[Vector]:
         self._y_hat = y_hat
 
     def _calculate_basis(self) -> None:
+        """Sets ``self.x_hat``, and ``self.y_hat``"""
+
         x_hat = self._x_hat
         y_hat = self._y_hat
         if x_hat is None:
@@ -72,18 +74,18 @@ class RoundedCornerCalculator[Vector]:
                 float_tolerance=self._float_tolerance,
                 points=[self._previous_vertex, self._corner_vertex, self._next_vertex],
             ).calculate()
-            self.calculated_x_hat = basis_calculator.basis_vectors[0]
+            self.x_hat = basis_calculator.basis_vectors[0]
         else:
-            self.calculated_x_hat = x_hat
+            self.x_hat = x_hat
         if y_hat is None:
             basis_calculator = OrthonormalBasisCalculator(
                 vector_field_operations=self._vector_field_operations,
                 float_tolerance=self._float_tolerance,
                 points=[self._previous_vertex, self._corner_vertex, self._next_vertex],
             ).calculate()
-            self.calculated_y_hat = basis_calculator.basis_vectors[1]
+            self.y_hat = basis_calculator.basis_vectors[1]
         else:
-            self.calculated_y_hat = y_hat
+            self.y_hat = y_hat
 
     def calculate(self) -> Self:
         """Calculates, and sets the folowing output parameters of the rounded
@@ -106,12 +108,12 @@ class RoundedCornerCalculator[Vector]:
         corner_to_previous_vertex_vector = vec.subtracted(previous_vertex, corner_vertex)
         corner_to_next_vertex_vector = vec.subtracted(next_vertex, corner_vertex)
         corner_to_previous_vertex_angle_rad = math.atan2(
-            vec.projection_length_on(direction=self.calculated_y_hat, projected=corner_to_previous_vertex_vector),
-            vec.projection_length_on(direction=self.calculated_x_hat, projected=corner_to_previous_vertex_vector),
+            vec.projection_length_on(direction=self.y_hat, projected=corner_to_previous_vertex_vector),
+            vec.projection_length_on(direction=self.x_hat, projected=corner_to_previous_vertex_vector),
         )
         corner_to_next_vertex_angle_rad = math.atan2(
-            vec.projection_length_on(direction=self.calculated_y_hat, projected=corner_to_next_vertex_vector),
-            vec.projection_length_on(direction=self.calculated_x_hat, projected=corner_to_next_vertex_vector),
+            vec.projection_length_on(direction=self.y_hat, projected=corner_to_next_vertex_vector),
+            vec.projection_length_on(direction=self.x_hat, projected=corner_to_next_vertex_vector),
         )
 
         edge_to_edge_angle_rad = math.fabs(corner_to_previous_vertex_angle_rad - corner_to_next_vertex_angle_rad)
@@ -133,8 +135,8 @@ class RoundedCornerCalculator[Vector]:
             edge_to_edge_angle_rad = 2.0 * math.pi - edge_to_edge_angle_rad
         center_to_edge_angle_rad = edge_to_edge_angle_rad / 2.0
         corner_to_center_dir = vec.added(
-            vec.scaled(self.calculated_x_hat, math.cos(corner_to_center_angle_rad)),
-            vec.scaled(self.calculated_y_hat, math.sin(corner_to_center_angle_rad)),
+            vec.scaled(self.x_hat, math.cos(corner_to_center_angle_rad)),
+            vec.scaled(self.y_hat, math.sin(corner_to_center_angle_rad)),
         )
         corner_to_center_distance = radius / math.sin(center_to_edge_angle_rad)
         center = vec.added(self._corner_vertex, vec.scaled(corner_to_center_dir, corner_to_center_distance))
@@ -142,8 +144,8 @@ class RoundedCornerCalculator[Vector]:
             vector_field_operations=vec,
             center=center,
             radius=radius,
-            x_hat=self.calculated_x_hat,
-            y_hat=self.calculated_y_hat,
+            x_hat=self.x_hat,
+            y_hat=self.y_hat,
         )
 
         edge_to_corner_shortening: Annotated[
@@ -175,7 +177,7 @@ class RoundedCornerCalculator[Vector]:
         corner_to_next_vertex_vector_norm = vec.norm(corner_to_next_vertex_vector)
         if corner_to_next_vertex_vector_norm < edge_to_corner_shortening:
             message = (
-                f"Rounded corner previous vertex is within the corner part "
+                f"Rounded corner next vertex is within the corner part "
                 f"cut off by rounding the corner.  Values: "
                 f"previous_vertex: {previous_vertex}, "
                 f"corner_vertex: {corner_vertex}, "

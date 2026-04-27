@@ -102,8 +102,8 @@ class TestRoundedCornerCalculator:
         result = calculator.calculate()
 
         # Verify
-        assert result.calculated_x_hat == pytest.approx(test_case.x_hat)
-        assert result.calculated_y_hat == pytest.approx(test_case.y_hat)
+        assert result.x_hat == pytest.approx(test_case.x_hat)
+        assert result.y_hat == pytest.approx(test_case.y_hat)
         assert result.center == pytest.approx(test_case.expected_center)
         assert result.radius == pytest.approx(test_case.radius)
         assert result.arc_start == pytest.approx(test_case.expected_arc_start)
@@ -129,8 +129,8 @@ class TestRoundedCornerCalculator:
             result = calculator.calculate()
 
         # Verify
-        assert result.calculated_x_hat == pytest.approx((1, 0))
-        assert result.calculated_y_hat == pytest.approx((0, 1))
+        assert result.x_hat == pytest.approx((1, 0))
+        assert result.y_hat == pytest.approx((0, 1))
         # This is an unstable solution.  The center could easily be at (-1, 4)
         # as well:
         assert result.center == pytest.approx((1, 4))
@@ -146,12 +146,49 @@ class TestRoundedCornerCalculator:
         assert warning.difference_from_alternate_solution == pytest.approx(0)
         assert warning.causing_exception is None
 
-    def test_throws_on_vertices_inside_arc_circle(self) -> None:
+    def test_calculate_throws_on_previous_vertex_inside_arc_circle(self) -> None:
         """
         ```
                       ^
                       |
                       |   * (4, 4) previous_vertex
+                      |
+                  *---+---*-->
+                (-4, 0)  (4, 0)
+            next_vertex   corner_vertex
+        ```
+        """
+
+        # Setup
+        vector_field_operations = TupleFloatVectorFieldOperations.for_2d()
+        calculator = RoundedCornerCalculator(
+            vector_field_operations=vector_field_operations,
+            float_tolerance=1e-8,
+            previous_vertex=(4, 4),
+            corner_vertex=(4, 0),
+            next_vertex=(-4, 0),
+            radius=5,
+            x_hat=(1, 0),
+            y_hat=(0, 1),
+        )
+
+        # Act and verify
+        with pytest.raises(
+            ImpossibleOutputGeometryError,
+            match=(
+                r"Rounded corner previous vertex is within the corner part "
+                "cut off by rounding the corner."
+            ),
+        ):
+            calculator.calculate()
+
+    def test_calculate_throws_on_next_vertex_inside_arc_circle(self) -> None:
+        """
+        ```
+                      ^
+                      |
+                      |   * (4, 8) previous_vertex
+                      |
                       |
                       *---*-->
                  (0, 0)   (4, 0)
@@ -164,7 +201,7 @@ class TestRoundedCornerCalculator:
         calculator = RoundedCornerCalculator(
             vector_field_operations=vector_field_operations,
             float_tolerance=1e-8,
-            previous_vertex=(4, 4),
+            previous_vertex=(4, 8),
             corner_vertex=(4, 0),
             next_vertex=(0, 0),
             radius=5,
@@ -173,5 +210,36 @@ class TestRoundedCornerCalculator:
         )
 
         # Act and verify
-        with pytest.raises(ImpossibleOutputGeometryError):
+        with pytest.raises(
+            ImpossibleOutputGeometryError,
+            match=(
+                r"Rounded corner next vertex is within the corner part "
+                "cut off by rounding the corner."
+            ),
+        ):
             calculator.calculate()
+
+    def test_calculate_chooses_a_plane_basis_if_unspecified(self) -> None:
+        # Setup
+        vector_field_operations = TupleFloatVectorFieldOperations.for_2d()
+        calculator = RoundedCornerCalculator(
+            vector_field_operations=vector_field_operations,
+            float_tolerance=1e-8,
+            previous_vertex=(0, 0),
+            corner_vertex=(4, 0),
+            next_vertex=(4, 4),
+            radius=1,
+        )
+
+        # Act
+        result = calculator.calculate()
+
+        # Verify
+        assert result.x_hat == pytest.approx((1, 0))
+        assert result.y_hat == pytest.approx((0, 1))
+
+        assert result.center == pytest.approx((3, 1))
+        assert result.radius == pytest.approx(1)
+        assert result.arc_start == pytest.approx((3, 0))
+        assert result.arc_midpoint == pytest.approx((3 + math.sqrt(2) / 2, 1 - math.sqrt(2) / 2))
+        assert result.arc_end == pytest.approx((4, 1))

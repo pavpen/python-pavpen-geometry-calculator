@@ -42,14 +42,12 @@ parallel = true
 omit = ["src/pavpen/geometry_calculator/_version.py"]
 
 [tool.coverage.paths]
-pavpen_geometry_calculator = [
-  "src/pavpen/geometry_calculator",
-  "*/src/pavpen/geometry-calculator",
-]
+pavpen_geometry_calculator = ["src/pavpen/geometry_calculator"]
 tests = ["tests"]
 
 [tool.coverage.report]
 exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
+show_missing = true
 
 [tool.hatch.build.targets.sdist]
 exclude = ["py-venv"]

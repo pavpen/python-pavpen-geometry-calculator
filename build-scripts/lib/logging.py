@@ -4,6 +4,7 @@
 
 import logging
 
+
 def setup_initial_logging():
     logging.basicConfig(
         datefmt="%Y-%m-%dT%H:%M:%S",

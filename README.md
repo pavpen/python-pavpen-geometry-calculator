@@ -1,6 +1,6 @@
 # Geometry Calculator
 
-[![Measure test coverage workflow report](https://github.com/pavpen/python-pavpen-geometry-calculator/actions/workflows/measure-test-coverage.yaml/badge.svg)](https://github.com/pavpen/python-pavpen-geometry-calculator/actions/workflows/measure-test-coverage.yaml)
+[![Measure test coverage](https://github.com/pavpen/python-pavpen-geometry-calculator/actions/workflows/measure-test-coverage.yaml/badge.svg?event=push)](https://github.com/pavpen/python-pavpen-geometry-calculator/actions/workflows/measure-test-coverage.yaml)
 [![Code coverage report](https://raw.githubusercontent.com/wiki/pavpen/python-pavpen-geometry-calculator/status/tests/reports/codecov-badge.svg)](https://github.com/pavpen/python-pavpen-geometry-calculator/wiki/coverage#test-coverage)
 
 Calculate coordinates, and other elements of a collection of geometric

@@ -21,6 +21,9 @@ import sphinx.addnodes
 import sphinx.domains
 from sphinx.application import Sphinx
 
+# Update the Python import path for this project's Sphinx extensions:
+sys.path.append(str(Path("python_packages").resolve()))
+
 GIT_PATH: Final[str] = "git"
 
 
@@ -74,6 +77,7 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.linkcode",
+    "sphinx_extensions.select",
 ]
 needs_extensions = {
     "sphinx.ext.autodoc": "1.1",
@@ -351,5 +355,12 @@ def handle_warn_missing_reference_to_generic_parameter(
 
 
 def setup(app: Sphinx):
+    """Adds extra functionality for rendering this project's documentation
+
+    Sets up `conf.py` to be treated as a Sphinx extension.   See the note in
+    the
+    [Sphinx API documentation](https://www.sphinx-doc.org/en/master/extdev/index.html#sphinx-api).
+    """
+
     app.connect("autodoc-process-signature", handle_autodoc_process_signature_adding_class_generic_parameters)
     app.connect("warn-missing-reference", handle_warn_missing_reference_to_generic_parameter)

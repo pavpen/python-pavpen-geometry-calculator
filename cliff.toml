@@ -9,7 +9,6 @@
 
 [changelog]
 header = """# Changelog
-
 """
 
 # A Tera template to be rendered for each release in the changelog.

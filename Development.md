@@ -12,6 +12,12 @@
   pip install hatch
   ```
 
+* Install [git-cliff](https://git-cliff.org/)
+
+  ```terminal
+  cargo install git-cliff
+  ```
+
 ## Type Checking
 
 ```terminal
@@ -40,6 +46,24 @@ hatch run test-coverage:to_html
 The report should be at
 [tests/reports/coverage-html/index.html](tests/reports/coverage-html/index.html).
 
+## Building Documentation
+
+* See [doc/README.md](doc/README.md).
+* Run:
+
+  ```terminal
+  hatch run doc:clean
+  hatch run doc:build
+  ```
+
+## Building a Change Log
+
+* Run `git-cliff`:
+
+  ```terminal
+  git-cliff
+  ```
+
 ## Release Tagging
 
 * After testing, and before packaging for release, tag the commit which
@@ -62,16 +86,6 @@ The report should be at
 
   ```terminal
   hatch build
-  ```
-
-## Building Documentation
-
-* See [doc/README.md](doc/README.md).
-* Run:
-
-  ```terminal
-  hatch run doc:clean
-  hatch run doc:build
   ```
 
 ## Package Publication

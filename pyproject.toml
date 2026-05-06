@@ -34,6 +34,7 @@ dependencies = []
 Documentation = "https://pavpen.github.io/python-pavpen-geometry-calculator/"
 Issues = "https://github.com/pavpen/python-pavpen-geometry-calculator/issues"
 Source = "https://github.com/pavpen/python-pavpen-geometry-calculator"
+Changelog = "https://github.com/pavpen/python-pavpen-geometry-calculator/blob/main/CHANGELOG.md"
 
 [tool.coverage.run]
 source = ["src/"]

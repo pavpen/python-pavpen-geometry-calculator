@@ -1,0 +1,22 @@
+{#
+Concepts borrowed from the upstream template in the Furo theme:
+https://github.com/pradyunsg/furo/blob/522d7e6534706a5acc916dee5ab35a3102e937e8/src/furo/theme/furo/sidebar/variant-selector.html
+#}
+<div id="furo-readthedocs-versions" class="rst-versions" data-toggle="rst-versions" role="note"
+    aria-label="{{ _('Versions') }}" tabindex="0">
+
+    <div class="rst-other-versions">
+        <dl>
+            <dt>{{ _('Versions') }}</dt>
+            {% for revision in doc_name_revisions %}
+            <dd>
+            {% if revision.documentation_version == doc_name_revision.documentation_version %}
+                {{ revision.documentation_version }} (current)
+            {% else %}
+                <a href="{{ revision.relative_url }}">{{ revision.documentation_version }}</a>
+            {% endif %}
+            </dd>
+            {% endfor %}
+        </dl>
+    </div>
+</div>

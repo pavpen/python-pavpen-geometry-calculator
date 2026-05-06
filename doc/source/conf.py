@@ -63,6 +63,8 @@ author = ",".join(author["name"] for author in pyproject_dict["project"]["author
 copyright = f"2026, {author}"  # noqa: A001
 release = get_version()
 
+source_url = pyproject_dict["project"]["urls"]["Source"].removesuffix("/")
+
 # Extract the <major.minor> part of `release`:
 version = ".".join(release.split(".")[:2])
 
@@ -78,6 +80,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.linkcode",
     "sphinx_extensions.select",
+    "sphinx_extensions.doc_version_selector",
 ]
 needs_extensions = {
     "sphinx.ext.autodoc": "1.1",
@@ -145,7 +148,6 @@ html_static_path = ["_static"]
 #
 # Plug-in code configuration
 #
-source_url = pyproject_dict["project"]["urls"]["Source"].removesuffix("/")
 is_repository_dirty_command = subprocess.run(
     [GIT_PATH, "status", "--porcelain"], shell=False, check=True, capture_output=True, encoding="utf-8"
 )

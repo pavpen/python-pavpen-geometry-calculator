@@ -22,9 +22,23 @@ body = """
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits %}
+        {#
+            Read changelog message from a `changelog-message: ...` footer, if
+            it exists.
+         #}\
+        {% set changelog_message_footer =
+                commit.footers |
+                filter(attribute="token", value="changelog-message") |
+                first
+         %}\
+        {% if changelog_message_footer == "" %}\
+            {% set changelog_message = commit.message | upper_first %}\
+        {% else %}\
+            {% set changelog_message = changelog_message_footer.value | replace(from="\n", to=" ") %}\
+        {% endif %}\
         - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
             {% if commit.breaking %}[**breaking**] {% endif %}\
-            {{ commit.message | upper_first }}\
+            {{ changelog_message }}\
     {% endfor %}
 {% endfor %}
 """

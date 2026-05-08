@@ -219,6 +219,39 @@ class TestRoundedCornerCalculator:
         ):
             calculator.calculate()
 
+    def test_calculate_throws_on_full_circle_corner_angle(self) -> None:
+        """
+        ```
+                       ^
+                       |
+                       |
+                       *-------*-->
+                  (0, 0)      (4, 0)
+        previous_vertex=       corner_vertex
+            next_vertex
+        ```
+        """
+
+        # Setup
+        vector_field_operations = TupleFloatVectorFieldOperations.for_2d()
+        calculator = RoundedCornerCalculator(
+            vector_field_operations=vector_field_operations,
+            float_tolerance=1e-8,
+            previous_vertex=(0, 0),
+            corner_vertex=(4, 0),
+            next_vertex=(0, 0),
+            radius=5,
+            x_hat=(1, 0),
+            y_hat=(0, 1),
+        )
+
+        # Act and verify
+        with pytest.raises(
+            ImpossibleOutputGeometryError,
+            match=(r"Rounded corner has a full circle angle "),
+        ):
+            calculator.calculate()
+
     def test_calculate_chooses_a_plane_basis_if_unspecified(self) -> None:
         # Setup
         vector_field_operations = TupleFloatVectorFieldOperations.for_2d()

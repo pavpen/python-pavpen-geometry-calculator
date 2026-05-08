@@ -138,7 +138,23 @@ class RoundedCornerCalculator[Vector]:
             vec.scaled(self.x_hat, math.cos(corner_to_center_angle_rad)),
             vec.scaled(self.y_hat, math.sin(corner_to_center_angle_rad)),
         )
-        corner_to_center_distance = radius / math.sin(center_to_edge_angle_rad)
+        sin_of_center_to_edge_angle = math.sin(center_to_edge_angle_rad)
+        if sin_of_center_to_edge_angle < float_tolerance:
+            message = (
+                f"Rounded corner has a full circle angle (∢previous_vertex to "
+                f"corner_vertex to next_vertex) within calculation error "
+                f"tolerance.  This would result in a rounded corner circular "
+                f"arc with a radius approaching infinity, and any finite "
+                f"previous_vertex, and next_vertex within the corner "
+                f"cut-off.  Values: previous_vertex: {previous_vertex}, "
+                f"corner_vertex: {corner_vertex}, "
+                f"next_vertex: {next_vertex}, radius: {radius}; "
+                f"center_to_edge_angle_rad: {center_to_edge_angle_rad}), "
+                f"sin(center_to_edge_angle_rad): {sin_of_center_to_edge_angle} < "
+                f"float_tolerance: {float_tolerance}"
+            )
+            raise ImpossibleOutputGeometryError(message)
+        corner_to_center_distance = radius / sin_of_center_to_edge_angle
         center = vec.added(self._corner_vertex, vec.scaled(corner_to_center_dir, corner_to_center_distance))
         circle_calculator = CircleCalculator(
             vector_field_operations=vec,

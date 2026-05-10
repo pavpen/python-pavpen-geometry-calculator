@@ -8,12 +8,10 @@ constructions.
 
 -----
 
-## Table of Contents
-
 * [Example](#example)
 * [Installation](#installation)
-* [License](#license)
-* [Documentation](#documentation)
+* [License](https://github.com/pavpen/python-pavpen-geometry-calculator/blob/main/LICENSE)
+* [Documentation](https://pavpen.github.io/python-pavpen-geometry-calculator/)
 
 ## Example
 
@@ -50,13 +48,3 @@ constructions.
 ```console
 pip install pavpen-geometry-calculator
 ```
-
-## License
-
-Geometry Calculator is distributed under the terms of the
-[MIT](https://spdx.org/licenses/MIT.html) license.
-
-## Documentation
-
-See the
-[API documentation site](https://pavpen.github.io/python-pavpen-geometry-calculator/).

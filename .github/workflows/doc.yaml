@@ -31,13 +31,13 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Install prerequisites
         run: "pip install hatch"
       - name: Build documentation
         run: "hatch run doc:build"
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           # Upload HTML build directory tree:
           path: 'doc/build/html'

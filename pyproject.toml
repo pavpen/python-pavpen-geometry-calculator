@@ -65,11 +65,12 @@ packages = ["src/pavpen"]
 
 [tool.hatch.envs.doc]
 detached = false
+builder = true                          # See <https://github.com/pypa/hatch/issues/2113>.
 extra-dependencies = ["furo", "sphinx"]
 
 [tool.hatch.envs.doc.scripts]
 # Add a `hatch run doc:build` command:
-build = "sphinx-build -M html doc/source doc/build"
+build = "python build-scripts/doc_build.py"
 clean = "python build-scripts/doc_clean.py"
 test = "sphinx-build -M doctest doc/source doc/build"
 
